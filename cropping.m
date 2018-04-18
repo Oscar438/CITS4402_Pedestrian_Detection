@@ -6,13 +6,17 @@ close all;
 for ii = 1 : 130
     fileName = [annotDir files(ii).name];
     record = PASreadrecord(fileName);
+    max = 0;
+    test = zeros(130, 324);
     for jj = 1 : length(record.objects)
         bbox = record.objects(jj).bbox;
         bbox(3:4) = bbox(3:4) - bbox(1:2);
         image = imread(strcat(baseDir,record.imgname));
         imageCropped = imcrop(image,bbox);
-        hogg_feature_vector(imageCropped);
+        imageresized = imresize(imageCropped,[80,20]);
+        test2 = hog_feature_vector(imageresized);
+        test(jj,:) = test2;
         imshow(imageCropped);
     end
-    hold off;    
+    hold off;    %80x20
 end
