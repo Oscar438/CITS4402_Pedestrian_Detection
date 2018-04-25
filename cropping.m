@@ -1,4 +1,4 @@
-baseDir = '\\uniwa.uwa.edu.au\userhome\Students1\21293921\My Documents\MATLAB\project1\';
+baseDir = [pwd '\training-data\'];
 annotDir = [baseDir 'PennFudanPed\Annotation\'];
 
 files = dir(annotDir); files(1:2) = [];
@@ -20,3 +20,6 @@ for ii = 1 : 130
     end
     hold off;    %80x20
 end
+
+% Next step is to scale all the images to the same size, was it 80x20? I
+% can't remember.
