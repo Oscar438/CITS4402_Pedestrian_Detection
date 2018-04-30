@@ -1,3 +1,5 @@
+% The MATLAB fullfile function might be a better solution here (if we're
+% pedandic about '/' vs '\'
 baseDir = [pwd '\training-data\'];
 annotDir = [baseDir 'PennFudanPed\Annotation\'];
 
