@@ -23,3 +23,7 @@ for ii = 1:length(files)
     imshow(imageCropped);
     pause(1);
 end
+
+
+%im2col and imresize will be much better here
+%If we resize afterwards as well that would be good
