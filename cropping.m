@@ -65,7 +65,7 @@ for ii = 1:112
     count= count+1;
 end
 
-SVM2 = fitcsvm(test,Labels);
-
+SVM = fitcsvm(test,Labels);
+SVM2 = fitSVMPosterior(SVM);
 % Next step is to scale all the images to the same size, was it 80x20? I
 % can't remember.
