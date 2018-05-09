@@ -12,11 +12,11 @@ for ii = 1:length(Data)
     if (Maximum == 0)
         break
     end
-    width = Data(index,1);
-    height = Data(index,2);
+    width = Data(index,3);
+    height = Data(index,4);
     DataOut(count,:) = Data(index,:);
     for jj = 1: length(Data)
-        if (jj ~= count && (abs(Data(jj,3) - Data(count,3)) < width/2) && (abs(Data(jj,4) - Data(count,4)) < height/2))
+        if (jj ~= count && (abs(Data(jj,1) - Data(count,1)) < width/2) && (abs(Data(jj,2) - Data(count,2)) < height/2))
             Data(jj,5) = 0;
         end
     end

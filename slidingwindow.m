@@ -1,11 +1,12 @@
-function [bbox] = slidingwindow(im,model, xbox, ybox, step, scale)
+function [bbox, person, notperson] = slidingwindow(im,model, xbox, ybox, step, scale)
 %SLIDING-WINDOW Summary of this function goes here
 %   Detailed explanation goes here
-% bbox = [xbox/scale, ybox/scale, xpos/scale, ypos/scale, probability]
-[height, width] = size(im);
+% bbox = [xpos/scale, ypos/scale, xbox/scale, ybox/scale, probability]
+[height, width, garbage] = size(im);
+
 count = 1;
 notperson = 1;
-bbox = zeros(1000,5);
+bbox = [];%zeros(1000,5);
 for ii = 1:step:height-ybox
     for jj = 1:step:width-xbox
         notperson = notperson + 1;
@@ -13,15 +14,16 @@ for ii = 1:step:height-ybox
         imageResized = imresize(imageCropped,[80,20]);
         hogImg = hog_feature_vector(imageResized);
         [ped, per] = predict(model, hogImg);
-        if (ped == 1)
-           probability = per(1,2);
+        probability = per(1,2);
+        if (ped == 1 && probability > 0.9)
            xpos = jj;
            ypos = ii;
-           bbox(count,:) = [xbox/scale, ybox/scale, xpos/scale, ypos/scale, probability];
+           bbox = [bbox; xpos/scale, ypos/scale, xbox/scale, ybox/scale, probability];
            count = count + 1;
         end
     end
 end
+person = count;
 
 
 end
