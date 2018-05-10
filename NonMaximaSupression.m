@@ -7,22 +7,21 @@ function [DataOut] = NonMaximaSupression(Data)
 
 count = 1;
 DataOut = zeros(size(Data));
-for ii = 1:length(Data)
+[rows, cols] = size(Data);
+for ii = 1:rows
     [Maximum,index] = max(Data(:,5));
     if (Maximum == 0)
         break
     end
     width = Data(index,3);
     height = Data(index,4);
-    DataOut(count,:) = Data(index,:);
-    [rows, cols] = size(Data);
+    DataOut(ii,:) = Data(index,:);
     for jj = 1: rows
-        if (jj ~= count && ((abs(Data(jj,1) - Data(count,1)) < width/2) || (abs(Data(jj,2) - Data(count,2)) < height/2)))
+        if (jj ~= index && ((abs(Data(jj,1) - Data(index,1)) < width/10) || (abs(Data(jj,2) - Data(index,2)) < height/10)))
             Data(jj,5) = 0;
         end
     end
     Data(index,5) = 0;
-    count = count + 1;
 end
 end
 

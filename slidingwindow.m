@@ -6,7 +6,7 @@ function [bbox, person, notperson] = slidingwindow(im,model, xbox, ybox, step, s
 
 count = 1;
 notperson = 1;
-bbox = [];%zeros(1000,5);
+bbox = zeros(round((width/step)*(height/step)), 5);
 for ii = 1:step:height-ybox
     for jj = 1:step:width-xbox
         notperson = notperson + 1;
@@ -18,7 +18,7 @@ for ii = 1:step:height-ybox
         if (ped == 1 && probability > 0.9)
            xpos = jj;
            ypos = ii;
-           bbox = [bbox; xpos/scale, ypos/scale, xbox/scale, ybox/scale, probability];
+           bbox(count,:) = [xpos/scale, ypos/scale, xbox/scale, ybox/scale, probability];
            count = count + 1;
         end
     end
