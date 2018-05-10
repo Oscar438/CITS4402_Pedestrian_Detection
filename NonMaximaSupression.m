@@ -15,8 +15,9 @@ for ii = 1:length(Data)
     width = Data(index,3);
     height = Data(index,4);
     DataOut(count,:) = Data(index,:);
-    for jj = 1: length(Data)
-        if (jj ~= count && (abs(Data(jj,1) - Data(count,1)) < width/2) && (abs(Data(jj,2) - Data(count,2)) < height/2))
+    [rows, cols] = size(Data);
+    for jj = 1: rows
+        if (jj ~= count && (abs(Data(jj,1) - Data(count,1)) < width/2) || (abs(Data(jj,2) - Data(count,2)) < height/2))
             Data(jj,5) = 0;
         end
     end
