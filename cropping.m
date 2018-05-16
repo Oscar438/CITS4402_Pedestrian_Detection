@@ -32,7 +32,7 @@ baseDir = [pwd '\Negative\'];
 files = dir(baseDir); files(1:2) = [];
 
 %need 112
-for ii = 1:112
+for ii = 1:620
     im = imread(files(ii).name);
     [rows, cols] = size(im);
     centreX = cols/2;
