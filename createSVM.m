@@ -45,19 +45,19 @@ end
 files = dir(negDir); files(1:2) = [];
 for ii = 1:112
     negImage = imread(files(ii).name);
-%     testNeg = negImage;
+    testNeg = negImage;
     [height, width, garbage] = size(negImage);
     xbox = int16(width./10);
     ybox = int16(height./4);
-%     if ii == 11
-%       figure, imshow(testNeg)
-%       hold on;
-%     end
+    if ii == 11
+      figure, imshow(testNeg)
+      hold on;
+    end
     for kk = 1:ybox:height-ybox
         for ll = 1:xbox:width-xbox
-%             if ii == 11
-%                 rectangle('Position',[ll, kk, xbox, ybox],'EdgeColor','g', 'LineWidth', 3); 
-%             end
+            if ii == 11
+                rectangle('Position',[ll, kk, xbox, ybox],'EdgeColor','g', 'LineWidth', 3); 
+            end
             negImageCropped = negImage(kk:kk+ybox,ll:ll+xbox);
             negImageResized = imresize(negImageCropped,[80,20]);
             test2 = hog_feature_vector(negImageResized);

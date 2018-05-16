@@ -2,7 +2,7 @@ function [output, output2] = main(im, SVM2)
 %UNTITLED2 Summary of this function goes here
 %   Detailed explanation goes here
 tic
-output = slidingwindow(imresize(im,0.3), SVM2, 20 ,80,5,0.3);
+output = slidingwindow(imresize(im,0.2), SVM2, 20 ,80,5,0.4);
 output2 = NonMaximaSupression(output);
 figure,imshow(im)
 hold on
