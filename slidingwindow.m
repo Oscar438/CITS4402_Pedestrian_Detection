@@ -6,7 +6,16 @@ function [bbox, person, notperson] = slidingwindow(im,model, xbox, ybox, step, s
 
 count = 1;
 notperson = 1;
+
+if (height - ybox <= 0|| width - xbox <= 0)
+    bbox = zeros(1,5);
+   return 
+end
+
 bbox = zeros(round((width/step)*(height/step)), 5);
+
+
+
 for ii = 1:step:height-ybox
     for jj = 1:step:width-xbox
         notperson = notperson + 1;
