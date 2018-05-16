@@ -14,7 +14,7 @@ for ii = 1 : 130
     fileName = [annotDir files(ii).name];
     record = PASreadrecord(fileName);
     image = imread(strcat(baseDir,record.imgname));
-    negImage = rgb2gray(image);
+%     negImage = rgb2gray(image);
     for jj = 1 : length(record.objects)
         bbox = record.objects(jj).bbox;
         bbox(3:4) = bbox(3:4) - bbox(1:2);
@@ -24,7 +24,7 @@ for ii = 1 : 130
         test(count,:) = test2;
         labels(count) = 1; 
         count= count+1;
-        negImage(bbox(2):(bbox(2)+bbox(4)), bbox(1):(bbox(1)+bbox(3))) = 0;
+%         negImage(bbox(2):(bbox(2)+bbox(4)), bbox(1):(bbox(1)+bbox(3))) = 0;
         %imshow(imageCropped);
     end
 %     [height, width, garbage] = size(negImage);
