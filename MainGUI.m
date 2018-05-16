@@ -78,6 +78,14 @@ function LoadImage_Callback(hObject, eventdata, handles)
 % hObject    handle to LoadImage (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+handles.file = uigetfile('*.png'); %putting in handle so can access later
+axes(handles.ImageIn);
+image = imread(handles.file);
+imshow(image);
+handles.SVM = load('HoggSVM.mat','SVM2');
+guidata(hObject, handles);
+
+
 
 
 % --- Executes on button press in DetectPedestrians.
@@ -85,6 +93,8 @@ function DetectPedestrians_Callback(hObject, eventdata, handles)
 % hObject    handle to DetectPedestrians (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+image = imread(handles.file);
+ScaleAndSlide(0.01,0.3,30,image,handles.SVM.SVM2);
 
 
 

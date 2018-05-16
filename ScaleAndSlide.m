@@ -6,7 +6,7 @@ StepSize = MinSize/Steps;
 ScaleOutput = zeros(10000,5);
 index = 1;
 for ii = MinSize:StepSize:MaxSize
-    Slide = slidingwindow(imresize(im,ii),SVM2,20,80,10,ii);
+    Slide = slidingwindow(imresize(im,ii),SVM2,25,80,5,ii);
     MaxSup = NonMaximaSupression(Slide);
     [rows, cols] = size(MaxSup);
     ScaleOutput(index:index+rows-1,1:5) = MaxSup;
@@ -15,7 +15,7 @@ end
 
 FinalOutput = NonMaximaSupression(ScaleOutput);
 
-figure,imshow(im)
+imshow(im)
 hold on
 [rows, cols] = size(FinalOutput);
 sScoreStart = 'Score: ';
@@ -28,7 +28,7 @@ for ii = 1:rows
     sScoreFinal = strcat(sScoreStart,sScore);
     text(double(FinalOutput(ii,1)), double(FinalOutput(ii,2)-10),sScoreFinal, 'Color', 'green', 'FontSize', 10);
 end
-
+hold off
 toc
 
 end
