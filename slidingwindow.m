@@ -6,18 +6,13 @@ function [bbox, person, notperson] = slidingwindow(im,model, xbox, ybox, step, s
 stepx = ceil(width/xbox/20);
 stepy = ceil(height/ybox/20);
 
-
 count = 1;
 notperson = 1;
-
 if (height - ybox <= 0|| width - xbox <= 0)
     bbox = zeros(1,5);
    return 
 end
-
 bbox = zeros(round((width/step)*(height/step)), 5);
-
-
 
 for ii = 1:stepy:height-ybox
     for jj = 1:stepx:width-xbox
@@ -36,7 +31,5 @@ for ii = 1:stepy:height-ybox
     end
 end
 person = count;
-
-
 end
 

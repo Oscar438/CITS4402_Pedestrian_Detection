@@ -14,7 +14,7 @@ for ii = 1 : 130
     fileName = [annotDir files(ii).name];
     record = PASreadrecord(fileName);
     image = imread(strcat(baseDir,record.imgname));
-    negImage = rgb2gray(image);
+%     negImage = rgb2gray(image);
     for jj = 1 : length(record.objects)
         bbox = record.objects(jj).bbox;
         bbox(3:4) = bbox(3:4) - bbox(1:2);
@@ -24,7 +24,7 @@ for ii = 1 : 130
         test(count,:) = test2;
         labels(count) = 1; 
         count= count+1;
-        negImage(bbox(2):(bbox(2)+bbox(4)), bbox(1):(bbox(1)+bbox(3))) = 0;
+%         negImage(bbox(2):(bbox(2)+bbox(4)), bbox(1):(bbox(1)+bbox(3))) = 0;
         %imshow(imageCropped);
     end
 %     [height, width, garbage] = size(negImage);
@@ -49,10 +49,10 @@ for ii = 1:112
     [height, width, garbage] = size(negImage);
     xbox = int16(width./10);
     ybox = int16(height./4);
-    if ii == 11
-      figure, imshow(testNeg)
-      hold on;
-    end
+%     if ii == 11
+%       figure, imshow(testNeg)
+%       hold on;
+%     end
     for kk = 1:ybox:height-ybox
         for ll = 1:xbox:width-xbox
             if ii == 11
@@ -71,5 +71,12 @@ end
 
 SVM = fitcsvm(test,labels);
 SVM2 = fitSVMPosterior(SVM);
+% [appendTest, appendLabel] = negativetraining(SVM2, files);
+% test = [test; appendTest];
+% labels = [labels; appendLabel];
+% SVM = fitcsvm(test,labels);
+% SVM2 = fitSVMPosterior(SVM);
+
+
 % Next step is to scale all the images to the same size, was it 80x20? I
 % can't remember.
