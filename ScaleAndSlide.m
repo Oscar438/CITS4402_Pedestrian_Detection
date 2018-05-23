@@ -1,9 +1,9 @@
-function [outputArg1] = ScaleAndSlide(MinSize,MaxSize, Steps,im, SVM2)
+function [time] = ScaleAndSlide(MinSize,MaxSize, Steps,im, SVM2)
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
-tic
-StepSize = MinSize/Steps;
-ScaleOutput = zeros(10000,5);
+tic;
+StepSize = (MaxSize-MinSize)/Steps;
+ScaleOutput = zeros(1,5);
 index = 1;
 for ii = MinSize:StepSize:MaxSize
     Slide = slidingwindow(imresize(im,ii),SVM2,25,80,5,ii);
@@ -13,7 +13,7 @@ for ii = MinSize:StepSize:MaxSize
     index = index+rows;
 end
 
-FinalOutput = NonMaximaSupression(ScaleOutput);
+FinalOutput = NonMaximaSupressionScales(ScaleOutput);
 
 imshow(im)
 hold on
@@ -29,7 +29,7 @@ for ii = 1:rows
     text(double(FinalOutput(ii,1)), double(FinalOutput(ii,2)-10),sScoreFinal, 'Color', 'green', 'FontSize', 10);
 end
 hold off
-toc
+time = toc;
 
 end
 
