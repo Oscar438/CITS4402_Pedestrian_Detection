@@ -15,8 +15,8 @@ for kk = 1:50
         if rows>0
             for jj = 1:rows
                 index = index+1;
-                imcrop = im( MaxSup(index, 2):(MaxSup(index, 2)+MaxSup(index, 4)) , MaxSup(index, 1):(MaxSup(index, 1)+MaxSup(index, 3)) );
-                imresiz = imresize(imcrop,[80,20]);
+                imCr = imcrop( im, MaxSup(index, 1:4) );
+                imresiz = imresize(imCr,[80,20]);
                 outFeature(index, :) = hog_feature_vector(imresiz);
             end 
         end     

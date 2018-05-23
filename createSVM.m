@@ -71,11 +71,11 @@ end
 
 SVM = fitcsvm(test,labels);
 SVM2 = fitSVMPosterior(SVM);
-% [appendTest, appendLabel] = negativetraining(SVM2, files);
-% test = [test; appendTest];
-% labels = [labels; appendLabel];
-% SVM = fitcsvm(test,labels);
-% SVM2 = fitSVMPosterior(SVM);
+[appendTest, appendLabel] = negativetraining(SVM2, files);
+test = [test; appendTest];
+labels = [labels; appendLabel];
+SVM = fitcsvm(test,labels);
+SVM2 = fitSVMPosterior(SVM);
 
 
 % Next step is to scale all the images to the same size, was it 80x20? I
