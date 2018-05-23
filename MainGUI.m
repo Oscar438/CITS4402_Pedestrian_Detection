@@ -84,7 +84,7 @@ handles.file = fullfile(folder, baseName);
 axes(handles.ImageIn);
 image = imread(handles.file);
 imshow(image);
-handles.SVM = load('HoggSVM.mat','SVM2');
+handles.SVM = load('chadSVM.mat','SVM2');
 end
 guidata(hObject, handles);
 
@@ -99,7 +99,7 @@ function DetectPedestrians_Callback(hObject, eventdata, handles)
 set(handles.DetectionTime,'String','Running');
 drawnow;
 image = imread(handles.file);
-time = ScaleAndSlide(0.1,0.3,10,image,handles.SVM.SVM2);
+time = ScaleAndSlide(0.01,0.3,20,image,handles.SVM.SVM2);
 set(handles.DetectionTime,'string',string(time));
 
 
