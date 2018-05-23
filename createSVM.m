@@ -7,10 +7,10 @@ negDir = [pwd '\Negative\'];
 files = dir(annotDir); files(1:2) = [];
 close all;
 count = 1;
-numCrops = 3360;
+numCrops = 5000;
 test = zeros(numCrops, 324);
 labels = zeros(numCrops,1);
-for ii = 1 : 130
+for ii = 1 : 170
     fileName = [annotDir files(ii).name];
     record = PASreadrecord(fileName);
     image = imread(strcat(baseDir,record.imgname));
@@ -43,7 +43,7 @@ for ii = 1 : 130
 end
 %335
 files = dir(negDir); files(1:2) = [];
-for ii = 1:112
+for ii = 1:100
     negImage = imread(files(ii).name);
     testNeg = negImage;
     [height, width, garbage] = size(negImage);
@@ -68,7 +68,8 @@ for ii = 1:112
     end
 
 end
-
+test = test(1:count,:);
+labels = labels(1:count,:);
 SVM = fitcsvm(test,labels);
 SVM2 = fitSVMPosterior(SVM);
 % [appendTest, appendLabel] = negativetraining(SVM2, files);

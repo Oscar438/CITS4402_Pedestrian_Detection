@@ -3,8 +3,12 @@ function [bbox, person, notperson] = slidingwindow(im,model, xbox, ybox, step, s
 %   Detailed explanation goes here
 % bbox = [xpos/scale, ypos/scale, xbox/scale, ybox/scale, probability]
 [height, width, garbage] = size(im);
-stepx = ceil(width/xbox/20);
-stepy = ceil(height/ybox/20);
+stepx = ceil(width/xbox);
+stepy = ceil(height/ybox);
+
+step = max(stepx,stepy);
+stepx = step;
+stepy = step;
 
 count = 1;
 notperson = 1;
@@ -22,7 +26,7 @@ for ii = 1:stepy:height-ybox
         hogImg = hog_feature_vector(imageResized);
         [ped, per] = predict(model, hogImg);
         probability = per(1,2);
-        if (ped == 1 && probability > 0.9)
+        if (ped == 1 && probability > 0.6)
            xpos = jj;
            ypos = ii;
            bbox(count,:) = [xpos/scale, ypos/scale, xbox/scale, ybox/scale, probability];

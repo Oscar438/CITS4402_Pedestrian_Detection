@@ -17,7 +17,7 @@ for ii = 1:rows
     height = Data(index,4);
     DataOut(ii,:) = Data(index,:);
     for jj = 1: rows
-        if (jj ~= index && ((abs(Data(jj,1) - Data(index,1)) < width/5) || (abs(Data(jj,2) - Data(index,2)) < height/5)))
+        if (jj ~= index && ((abs(Data(jj,1) - Data(index,1)) < width/3) || (abs(Data(jj,2) - Data(index,2)) < height/3)))
             Data(jj,5) = 0;
         end
     end

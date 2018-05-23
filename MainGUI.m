@@ -99,7 +99,7 @@ function DetectPedestrians_Callback(hObject, eventdata, handles)
 set(handles.DetectionTime,'String','Running');
 drawnow;
 image = imread(handles.file);
-time = ScaleAndSlide(0.1,0.3,10,image,handles.SVM.SVM2);
+time = ScaleAndSlide(0.01,0.3,40,image,handles.SVM.SVM2);
 set(handles.DetectionTime,'string',string(time));
 
 
