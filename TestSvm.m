@@ -19,7 +19,7 @@ for ii = 150 : 170
 %         if (count ==24)
 %             imshow(imageCropped);
 %         end
-        imageresized = imresize(imageCropped,[80,20]);
+        imageresized = imresize(imageCropped,[80,30]);
         test2 = hog_feature_vector(imageresized);
         [ped, per] = predict(SVM2,test2);
         output(count,1) = ped;

@@ -10,6 +10,7 @@ close all;
 count = 1;
 numCrops = 5000;
 test = zeros(numCrops, 648);
+
 labels = zeros(numCrops,1);
 for ii = 1 : 170
     fileName = [annotDir files(ii).name];
@@ -44,6 +45,7 @@ for ii = 1 : 170
 %     end
 end
 %335
+
 files = dir(newnegdir); files(1:2) = [];
 for ii = 1:30
     negImage = imread(files(ii).name);
@@ -69,6 +71,7 @@ for ii = 1:30
         end
     end
 end
+
 test = test(1:count, :);
 labels = labels(1:count,:);
 

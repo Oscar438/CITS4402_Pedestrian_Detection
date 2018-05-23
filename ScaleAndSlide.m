@@ -5,13 +5,18 @@ tic;
 StepSize = (MaxSize-MinSize)/Steps;
 ScaleOutput = zeros(1,5);
 index = 1;
-for ii = MinSize:StepSize:MaxSize
-    Slide = slidingwindow(imresize(im,ii),SVM2,30,80,5,ii, 0.8);
-    MaxSup = NonMaximaSupression(Slide);
-    [rows, cols] = size(MaxSup);
-    ScaleOutput(index:index+rows-1,1:5) = MaxSup;
-    index = index+rows;
-end
+
+% for kk = 0:5:10
+    for ii = MinSize:StepSize:MaxSize
+        Slide = slidingwindow(imresize(im,ii),SVM2,30,80,5,ii, 0.6);
+        MaxSup = NonMaximaSupression(Slide);
+        [rows, cols] = size(MaxSup);
+        ScaleOutput(index:index+rows-1,1:5) = MaxSup;
+        index = index+rows;
+    end
+% end
+
+
 
 FinalOutput = NonMaximaSupressionScales(ScaleOutput);
 
