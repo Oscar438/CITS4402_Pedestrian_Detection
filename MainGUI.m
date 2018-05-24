@@ -84,8 +84,7 @@ handles.file = fullfile(folder, baseName);
 axes(handles.ImageIn);
 image = imread(handles.file);
 imshow(image);
-handles.SVM = load('HoggSVM3.mat','SVM2');
-end
+handles.SVM = load('HoggSVM.mat','SVM2');end
 guidata(hObject, handles);
 
 

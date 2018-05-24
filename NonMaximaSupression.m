@@ -2,10 +2,6 @@ function [DataOut] = NonMaximaSupression(Data)
 %UNTITLED4 Summary of this function goes here
 %   Detailed explanation goes here
 %   Data [x,y,width,height,probability]
-%   Data [width,height,x,y,probability]
-%    1-> 3, 2->4, 
-
-count = 1;
 DataOut = zeros(size(Data));
 [rows, cols] = size(Data);
 for ii = 1:rows

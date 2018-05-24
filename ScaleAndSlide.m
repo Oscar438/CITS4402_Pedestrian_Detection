@@ -8,7 +8,7 @@ index = 1;
 
 for kk = 0:4:20
     for ii = MinSize:StepSize:MaxSize
-        Slide = slidingwindow(imresize(im,ii),SVM2,25+kk,80,5,ii);
+        Slide = slidingwindow(imresize(im,ii),SVM2,25+kk,80,5,ii,0.6);
         MaxSup = NonMaximaSupression(Slide);
         [rows, cols] = size(MaxSup);
         ScaleOutput(index:index+rows-1,1:5) = MaxSup;
@@ -37,4 +37,5 @@ hold off
 time = toc;
 
 end
+
 
