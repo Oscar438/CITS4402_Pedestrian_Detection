@@ -21,7 +21,7 @@ for ii = 1:rows
         heightCurrent = Data(jj,4);
         width = max(widthCurrent,widthMax);
         height = max(heightMax,heightCurrent);
-        if (jj ~= index && ((abs(Data(jj,1) - Data(index,1)) < width/3) || (abs(Data(jj,2) - Data(index,2)) < height/3)))
+        if (jj ~= index && ((abs(Data(jj,1) - Data(index,1)) < width/2) && (abs(Data(jj,2) - Data(index,2)) < height)))
             Data(jj,5) = 0;
         end
     end

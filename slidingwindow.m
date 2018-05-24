@@ -3,10 +3,8 @@ function [bbox, person, notperson] = slidingwindow(im,model, xbox, ybox, step, s
 %   Detailed explanation goes here
 % bbox = [xpos/scale, ypos/scale, xbox/scale, ybox/scale, probability]
 [height, width, garbage] = size(im);
-stepx = ceil(width/xbox);
-stepy = ceil(height/ybox);
 
-step = max(stepx,stepy);
+step = max([ceil(width/xbox), ceil(height/ybox), ceil(xbox/5), ceil(ybox/5)]);
 stepx = step;
 stepy = step;
 
