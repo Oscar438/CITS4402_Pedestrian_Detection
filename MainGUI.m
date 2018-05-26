@@ -80,11 +80,12 @@ function LoadImage_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 [baseName, folder] = uigetfile('*.png');
 if (folder ~= 0)
-handles.file = fullfile(folder, baseName);
-axes(handles.ImageIn);
-image = imread(handles.file);
-imshow(image);
-handles.SVM = load('HoggSVM.mat','SVM2');end
+    handles.file = fullfile(folder, baseName);
+    axes(handles.ImageIn);
+    image = imread(handles.file);
+    imshow(image);
+    handles.SVM = load('HoggSVM.mat','SVM2');
+end
 guidata(hObject, handles);
 
 
@@ -98,7 +99,7 @@ function DetectPedestrians_Callback(hObject, eventdata, handles)
 set(handles.DetectionTime,'String','Running');
 drawnow;
 image = imread(handles.file);
-time = ScaleAndSlide(0.01,0.3,20,image,handles.SVM.SVM2);
+time = ScaleAndSlide(0.01,0.3,20,image,handles.SVM.SVM2, 80, 20, 0.6, 1, 30, 80, 5);
 set(handles.DetectionTime,'string',string(time));
 
 

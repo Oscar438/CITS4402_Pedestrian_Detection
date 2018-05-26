@@ -1,27 +1,28 @@
 % The MATLAB fullfile function might be a better solution here (if we're
 % pedandic about '/' vs '\'
-baseDir = [pwd '\training-data\'];
-annotDir = [baseDir 'PennFudanPed\Annotation\'];
-negDir = [pwd '\Negative\'];
-newnegdir = [pwd '\ped-negative\'];
+
+baseDir = fullfile(pwd, 'training-data');
+annotDir = fullfile(baseDir, 'PennFudanPed', 'Annotation');
+negDir = fullfile(baseDir, 'Negative');
+pednegdir = fullfile(baseDir, 'ped-negative');
 
 files = dir(annotDir); files(1:2) = [];
 close all;
 count = 1;
 numCrops = 5000;
-test = zeros(numCrops, 648);
+test = zeros(numCrops, 324);
 
 labels = zeros(numCrops,1);
 for ii = 1 : 170
-    fileName = [annotDir files(ii).name];
+    fileName = fullfile(annotDir, files(ii).name);
     record = PASreadrecord(fileName);
-    image = imread(strcat(baseDir,record.imgname));
+    image = imread(fullfile(baseDir,record.imgname));
     negImage = rgb2gray(image);
     for jj = 1 : length(record.objects)
         bbox = record.objects(jj).bbox;
         bbox(3:4) = bbox(3:4) - bbox(1:2);
         imageCropped = imcrop(image,bbox);
-        imageresized = imresize(imageCropped,[80,30]);
+        imageresized = imresize(imageCropped,[80,20]);
         test2 = hog_feature_vector(imageresized);
         test(count,:) = test2;
         labels(count) = 1; 
@@ -46,7 +47,7 @@ for ii = 1 : 170
 end
 %335
 
-files = dir(newnegdir); files(1:2) = [];
+files = dir(negDir); files(1:2) = [];
 for ii = 1:30
     negImage = imread(files(ii).name);
     testNeg = negImage;
@@ -63,7 +64,7 @@ for ii = 1:30
 %                 rectangle('Position',[ll, kk, xbox, ybox],'EdgeColor','g', 'LineWidth', 3); 
 %             end
             negImageCropped = negImage(kk:kk+ybox,ll:ll+xbox);
-            negImageResized = imresize(negImageCropped,[80,30]);
+            negImageResized = imresize(negImageCropped,[80,20]);
             test2 = hog_feature_vector(negImageResized);
             test(count,:) = test2;
             labels(count) = 0; 
@@ -77,7 +78,7 @@ labels = labels(1:count,:);
 
 SVM = fitcsvm(test,labels);
 SVM2 = fitSVMPosterior(SVM);
-[appendTest, appendLabel] = negativetraining(SVM2, files);
+[appendTest, appendLabel] = negativetraining(SVM2, files, 20, 80, 20, 324);
 test = [test; appendTest];
 labels = [labels; appendLabel];
 SVM = fitcsvm(test,labels);
@@ -85,7 +86,7 @@ SVM2 = fitSVMPosterior(SVM);
 
 files = dir(negDir); files(1:2) = [];
 
-[appendTest, appendLabel] = negativetraining(SVM2, files);
+[appendTest, appendLabel] = negativetraining(SVM2, files, 20, 80, 20, 324);
 test = [test; appendTest];
 labels = [labels; appendLabel];
 SVM = fitcsvm(test,labels);

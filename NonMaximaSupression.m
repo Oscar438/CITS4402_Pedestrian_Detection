@@ -3,7 +3,7 @@ function [DataOut] = NonMaximaSupression(Data)
 %   Detailed explanation goes here
 %   Data [x,y,width,height,probability]
 DataOut = zeros(size(Data));
-[rows, cols] = size(Data);
+[rows, ~] = size(Data);
 for ii = 1:rows
     [Maximum,index] = max(Data(:,5));
     if (Maximum == 0)
