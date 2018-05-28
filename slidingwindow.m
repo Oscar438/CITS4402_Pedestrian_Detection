@@ -9,10 +9,10 @@ stepy = step;
 
 count = 1;
 if (height - ybox <= 0|| width - xbox <= 0)
-    bbox = zeros(1,5);
+    bbox = zeros(1,7);
    return 
 end
-bbox = zeros(round((width/step)*(height/step)), 5);
+bbox = zeros(round((width/step)*(height/step)), 7);
 
 for ii = 1:stepy:height-ybox
     for jj = 1:stepx:width-xbox
@@ -24,7 +24,7 @@ for ii = 1:stepy:height-ybox
         if (ped == 1 && probability > prob)
            xpos = jj;
            ypos = ii;
-           bbox(count,:) = [xpos/scale, ypos/scale, xbox/scale, ybox/scale, probability];
+           bbox(count,:) = [xpos/scale, ypos/scale, xbox/scale, ybox/scale, probability, xbox, ybox];
            count = count + 1;
         end
     end

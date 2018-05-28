@@ -3,17 +3,18 @@ function [time] = ScaleAndSlide(MinSize,MaxSize, samples,im, SVM2, hogrows, hogc
 %   Detailed explanation goes here
 tic;
 StepSize = (MaxSize-MinSize)/samples;
-ScaleOutput = zeros(1,5);
+ScaleOutput = zeros(1,7);
 index = 1;
-for ll = -4:yvar:4
-    for jj = 0:xvar:9
+
+for ll = -2:yvar:2
+    for jj = -5:xvar:5
         for ii = MinSize:StepSize:MaxSize
             MaxSup = slidingwindow(imresize(im,ii),SVM2,xbox+jj,ybox+ll,ii,prob, hogrows, hogcols);
             if sup == 1
                 MaxSup = NonMaximaSupression(MaxSup);
             end
             [rows, ~] = size(MaxSup);
-            ScaleOutput(index:index+rows-1,1:5) = MaxSup;
+            ScaleOutput(index:index+rows-1,1:7) = MaxSup;
             index = index+rows;
         end
     end
@@ -34,7 +35,7 @@ for ii = 1:rows
     end
     rectangle('Position',FinalOutput(ii,1:4),'EdgeColor','g', 'LineWidth', 3);
     sScore = num2str(FinalOutput(ii,5)*100);
-    sScoreFinal = strcat(sScoreStart,sScore);
+    sScoreFinal = strcat(sScoreStart,sScore, ' ratio: x:', num2str(FinalOutput(ii, 6)),' y: ', num2str(FinalOutput(ii,7)));
     text(double(FinalOutput(ii,1)), double(FinalOutput(ii,2)-10),sScoreFinal, 'Color', 'green', 'FontSize', 10);
 end
 hold off
