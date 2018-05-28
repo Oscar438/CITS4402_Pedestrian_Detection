@@ -22,7 +22,7 @@ function varargout = ParamTuningGUI(varargin)
 
 % Edit the above text to modify the response to help ParamTuningGUI
 
-% Last Modified by GUIDE v2.5 26-May-2018 16:35:11
+% Last Modified by GUIDE v2.5 28-May-2018 17:47:53
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -129,30 +129,29 @@ function detectpeople_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 drawnow;
 image = imread(handles.file);
-time = ScaleAndSlide(handles.minSize,handles.maxSize,handles.samples,image, handles.SVM.SVM2, 80, 20, handles.prob, handles.sup, handles.xbox, handles.ybox, handles.step );
+time = ScaleAndSlide(handles.minSize,handles.maxSize,handles.samples,image, handles.SVM.SVM2, 80, 20, handles.prob, handles.sup, handles.xbox, handles.ybox, handles.xvar, handles.yvar );
 
-set(handles.timestext,'string', strcat( get(handles.timestext, 'string'), '\n', string(time), string(handles.minSize),string(handles.maxSize),string(handles.samples),...
-     string(80), string(20), string(handles.prob), string(handles.xbox), string(handles.ybox, handles.sup)) );
+set(handles.timestext,'string',  string(time));
 
 
 % --- Executes on slider movement.
-function stepslider_Callback(hObject, eventdata, handles)
-% hObject    handle to stepslider (see GCBO)
+function xvarslider_Callback(hObject, eventdata, handles)
+% hObject    handle to xvarslider (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
 newVal = floor(get(hObject,'Value'));
 set(hObject,'Value',newVal);
-set(handles.steptext, 'string', get(hObject, 'value'));
-handles.step = newVal;
+set(handles.xvartext, 'string', get(hObject, 'value'));
+handles.xvar = newVal;
 guidata(hObject, handles);
 
 
 
 
 % --- Executes during object creation, after setting all properties.
-function stepslider_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to stepslider (see GCBO)
+function xvarslider_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to xvarslider (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -160,6 +159,7 @@ function stepslider_CreateFcn(hObject, eventdata, handles)
 if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor',[.9 .9 .9]);
 end
+set(handles.xvartext, 'string', get(hObject, 'value'));
 
 
 % --- Executes on slider movement.
@@ -336,3 +336,29 @@ function axis1_CreateFcn(hObject, eventdata, handles)
 
 % Hint: place code in OpeningFcn to populate axis1
 guidata(hObject, handles);
+
+
+% --- Executes on slider movement.
+function yvarslide_Callback(hObject, eventdata, handles)
+% hObject    handle to yvarslide (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'Value') returns position of slider
+%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+newVal = floor(get(hObject,'Value'));
+set(hObject,'Value',newVal);
+set(handles.yvartext, 'string', get(hObject, 'value'));
+handles.yvar = newVal;
+guidata(hObject, handles);
+
+% --- Executes during object creation, after setting all properties.
+function yvarslide_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to yvarslide (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: slider controls usually have a light gray background.
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end

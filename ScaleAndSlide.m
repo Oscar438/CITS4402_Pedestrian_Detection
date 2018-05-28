@@ -1,22 +1,23 @@
-function [time] = ScaleAndSlide(MinSize,MaxSize, samples,im, SVM2, hogrows, hogcols, prob, sup, xbox, ybox, step)
+function [time] = ScaleAndSlide(MinSize,MaxSize, samples,im, SVM2, hogrows, hogcols, prob, sup, xbox, ybox, xvar,yvar)
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
 tic;
 StepSize = (MaxSize-MinSize)/samples;
 ScaleOutput = zeros(1,5);
 index = 1;
-
-
-for ii = MinSize:StepSize:MaxSize
-    MaxSup = slidingwindow(imresize(im,ii),SVM2,xbox,ybox,step,ii,prob, hogrows, hogcols);
-    if sup == 1
-        MaxSup = NonMaximaSupression(MaxSup);
+for ll = -4:yvar:4
+    for jj = 0:xvar:9
+        for ii = MinSize:StepSize:MaxSize
+            MaxSup = slidingwindow(imresize(im,ii),SVM2,xbox+jj,ybox+ll,ii,prob, hogrows, hogcols);
+            if sup == 1
+                MaxSup = NonMaximaSupression(MaxSup);
+            end
+            [rows, ~] = size(MaxSup);
+            ScaleOutput(index:index+rows-1,1:5) = MaxSup;
+            index = index+rows;
+        end
     end
-    [rows, ~] = size(MaxSup);
-    ScaleOutput(index:index+rows-1,1:5) = MaxSup;
-    index = index+rows;
 end
-
 if sup == 1
     FinalOutput = NonMaximaSupressionScales(ScaleOutput);
 else 

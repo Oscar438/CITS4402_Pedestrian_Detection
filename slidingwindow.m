@@ -1,9 +1,9 @@
-function [bbox] = slidingwindow(im,model, xbox, ybox, step, scale, prob,  hogrows, hogcols)
+function [bbox] = slidingwindow(im,model, xbox, ybox, scale, prob,  hogrows, hogcols)
 %SLIDING-WINDOW Summary of this function goes here
 %   Detailed explanation goes here
 % bbox = [xpos/scale, ypos/scale, xbox/scale, ybox/scale, probability]
 [height, width, ~] = size(im);
-%step = max([ceil(width/xbox), ceil(height/ybox), ceil(xbox/5), ceil(ybox/5)]);
+step = max([ceil(width/xbox), ceil(height/ybox), ceil(xbox/5), ceil(ybox/5)]);
 stepx = step;
 stepy = step;
 
