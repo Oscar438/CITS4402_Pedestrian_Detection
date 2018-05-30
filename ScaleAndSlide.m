@@ -2,8 +2,7 @@ function [time] = ScaleAndSlide(MinSize,MaxSize, samples,im, SVM2, hogrows, hogc
 
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
-
-tic;
+tic
 StepSize = (MaxSize-MinSize)/samples;
 ScaleOutput = zeros(1,7);
 index = 1;
@@ -31,7 +30,7 @@ imshow(im)
 
 hold on
 [rows, ~] = size(FinalOutput);
-fprintf('Start Detection \n');
+%fprintf('Start Detection \n');
 for ii = 1:rows
     if (FinalOutput(ii,3) == 0)
         continue
@@ -54,6 +53,11 @@ for ii = 1:rows
 end
 hold off
 time = toc;
+extra = 0;
+if (time < 0.5 )
+   extra = ScaleAndSlide(MinSize,MaxSize*1.3, samples,im, SVM2, hogrows, hogcols, prob, sup, xbox, ybox, advanced);
+end
+time = time + extra;
 
 end
 
