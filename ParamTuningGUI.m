@@ -22,7 +22,7 @@ function varargout = ParamTuningGUI(varargin)
 
 % Edit the above text to modify the response to help ParamTuningGUI
 
-% Last Modified by GUIDE v2.5 28-May-2018 17:47:53
+% Last Modified by GUIDE v2.5 28-May-2018 18:44:40
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -113,7 +113,7 @@ title = 'Input';
 dims = [1 35];
 definput = {'badboySVM', '100','100','50', '1', '80', '20' };
 out = inputdlg(prompt,title,dims,definput);
-SVM2 = generateModel( str2num(out{2}), str2num(out{3}), str2num(out{4}), str2num(out{5}), str2num(out{6}), str2num(out{7}) );
+SVM2 = generateModel( str2double(out{2}), str2double(out{3}), str2double(out{4}), str2double(out{5}), str2double(out{6}), str2double(out{7}) );
 save(out{1}, 'SVM2');
 handles.SVM = SVM2;
 
@@ -129,9 +129,12 @@ function detectpeople_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 drawnow;
 image = imread(handles.file);
-time = ScaleAndSlide(handles.minSize,handles.maxSize,handles.samples,image, handles.SVM.SVM2, 80, 20, handles.prob, handles.sup, handles.xbox, handles.ybox, handles.xvar, handles.yvar );
+handle.time = ScaleAndSlide(handles.minSize,handles.maxSize,handles.samples,image, handles.SVM.SVM2, handles.hogrows, handles.hogcols, handles.prob, handles.sup, handles.xbox, handles.ybox, handles.xvar, handles.yvar );
 
-set(handles.timestext,'string',  string(time));
+set(handles.timestext,'string',  string(handle.time));
+guidata(hObject, handles);
+
+
 
 
 % --- Executes on slider movement.
@@ -361,4 +364,53 @@ function yvarslide_CreateFcn(hObject, eventdata, handles)
 % Hint: slider controls usually have a light gray background.
 if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+
+function edit1_Callback(hObject, eventdata, handles)
+% hObject    handle to edit1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit1 as text
+%        str2double(get(hObject,'String')) returns contents of edit1 as a double
+handles.hogrows = str2double(get(hObject,'String'));
+guidata(hObject, handles);
+
+% --- Executes during object creation, after setting all properties.
+function edit1_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function edit2_Callback(hObject, eventdata, handles)
+% hObject    handle to edit2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit2 as text
+%        str2double(get(hObject,'String')) returns contents of edit2 as a double
+handles.hogcols = str2double(get(hObject,'String'));
+guidata(hObject, handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function edit2_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
 end

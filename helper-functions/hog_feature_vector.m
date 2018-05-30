@@ -41,8 +41,8 @@ angle=atand(Ix./Iy); % Matrix containing the angles of each edge gradient
 angle=imadd(angle,90); %Angles in range (0,180)
 magnitude=sqrt(Ix.^2 + Iy.^2);
 
- %figure,imshow(uint8(angle));
- %figure,imshow(uint8(magnitude));
+%figure,imshow(uint8(angle));
+%figure,imshow(uint8(magnitude));
 
 % Remove redundant pixels in an image. 
 angle(isnan(angle))=0;
@@ -56,7 +56,7 @@ for i = 0: rows/8 - 2
         %disp([i,j])
         
         mag_patch = magnitude(8*i+1 : 8*i+16 , 8*j+1 : 8*j+16);
-        %mag_patch = imfilter(mag_patch,gauss);
+        mag_patch = imfilter(mag_patch,gauss);
         ang_patch = angle(8*i+1 : 8*i+16 , 8*j+1 : 8*j+16);
         
         block_feature=[];
