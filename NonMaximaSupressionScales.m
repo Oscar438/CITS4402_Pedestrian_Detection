@@ -5,7 +5,7 @@ function [DataOut] = NonMaximaSupressionScales(Data)
 %   Data [width,height,x,y,probability]
 %    1-> 3, 2->4, 
 DataOut = zeros(size(Data));
-[rows, cols] = size(Data);
+[rows, ~] = size(Data);
 for ii = 1:rows
     [Maximum,index] = max(Data(:,5));
     if (Maximum == 0)
@@ -19,7 +19,10 @@ for ii = 1:rows
         heightCurrent = Data(jj,4);
         width = max(widthCurrent,widthMax);
         height = max(heightMax,heightCurrent);
-        if (jj ~= index && ((abs(Data(jj,1) - Data(index,1)) < width/2) && (abs(Data(jj,2) - Data(index,2)) < height)))            Data(jj,5) = 0;
+        if (jj ~= index && ((abs(Data(jj,1) - Data(index,1)) < width/2) && (abs(Data(jj,2) - Data(index,2)) < heightMax))) 
+            Data(jj,5) = 0;
+         elseif (jj ~= index && ((abs(Data(jj,1) - (Data(index,1)-widthMax)) < widthMax/2) && (abs(Data(jj,2) - Data(index,2)) < heightMax)))
+            Data(jj,5) = 0; 
         end
     end
     Data(index,5) = 0;

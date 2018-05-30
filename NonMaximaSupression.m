@@ -15,6 +15,8 @@ for ii = 1:rows
     for jj = 1: rows
         if (jj ~= index && ((abs(Data(jj,1) - Data(index,1)) < width/2) && (abs(Data(jj,2) - Data(index,2)) < height)))
             Data(jj,5) = 0;
+        elseif (jj ~= index && ((abs(Data(jj,1) - Data(index,1)-width) < width/2) && (abs(Data(jj,2) - Data(index,2)) < height)))
+            Data(jj,5) = 0;  
         end
     end
     Data(index,5) = 0;

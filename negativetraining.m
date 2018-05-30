@@ -1,10 +1,10 @@
-function [outFeature, outLabel] = negativetraining(model, files, negativesmining, hogrows, hogcols, featureSize, itr)
+function [outFeature, outLabel] = negativetraining(model, files, negativesmining, hogrows, hogcols, featureSize)
 %NEGATIVETRAINING Summary of this function goes here
 %   Creates a new labeled set of training data, which gets fed in to the
 %   SVM
 outFeature = zeros(5000, featureSize);
 count = 1;
-for kk = ((itr-1)*negativesmining+1):(itr*negativesmining)
+for kk = 1:negativesmining%((itr-1)*negativesmining+1):(itr*negativesmining)
     im = imread(files(kk).name);
     for ii = linspace(0.05, 0.3, 10)
         index=0;
@@ -13,8 +13,7 @@ for kk = ((itr-1)*negativesmining+1):(itr*negativesmining)
         MaxSup( ~any(MaxSup,2), : ) = []; 
         [rows, ~] = size(MaxSup);
         MaxSup = uint16(MaxSup);
-   
-        
+
         if rows>0
             for jj = 1:rows
                 index = index+1;

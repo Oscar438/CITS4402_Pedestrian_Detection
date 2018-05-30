@@ -114,7 +114,7 @@ dims = [1 35];
 definput = {'badboySVM', '100','100','50', '1', '80', '30' };
 out = inputdlg(prompt,title,dims,definput);
 SVM2 = generateModel( str2double(out{2}), str2double(out{3}), str2double(out{4}), str2double(out{5}), str2double(out{6}), str2double(out{7}) );
-save(out{1}, 'SVM2');
+save(strcat(out{1}, out{2},out{3},out{4},out{5},out{6}, out{7}), 'SVM2');
 handles.SVM = SVM2;
 
 guidata(hObject, handles);
@@ -129,8 +129,7 @@ function detectpeople_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 drawnow;
 image = imread(handles.file);
-handle.time = ScaleAndSlide(handles.minSize,handles.maxSize,handles.samples,image, handles.SVM.SVM2, handles.hogrows, handles.hogcols, handles.prob, handles.sup, handles.xbox, handles.ybox, handles.xvar, handles.yvar );
-
+handle.time = ScaleAndSlide(handles.minSize,handles.maxSize,handles.samples,image, handles.SVM.SVM2, handles.hogrows, handles.hogcols, handles.prob, handles.sup, handles.xbox, handles.ybox );
 set(handles.timestext,'string',  string(handle.time));
 guidata(hObject, handles);
 
@@ -184,18 +183,6 @@ end
 handles.hogcols = 80;
 guidata(hObject, handles);
 
-
-
-
-function xvartext_Callback(hObject, eventdata, handles)
-% hObject    handle to xvartext (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of xvartext as text
-%        str2double(get(hObject,'String')) returns contents of xvartext as a double
-handles.xvar = str2double(get(hObject,'String'));
-guidata(hObject, handles);
 
 
 function mintext_Callback(hObject, eventdata, handles)
@@ -262,32 +249,6 @@ function probtext_Callback(hObject, eventdata, handles)
 %        str2double(get(hObject,'String')) returns contents of probtext as a double
 
 handles.prob = str2double(get(hObject,'String'));
-guidata(hObject, handles);
-
-function yvartext_Callback(hObject, eventdata, handles)
-% hObject    handle to yvartext (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of yvartext as text
-%        str2double(get(hObject,'String')) returns contents of yvartext as a double
-handles.yvar = str2double(get(hObject,'String'));
-guidata(hObject, handles);
-
-
-% --- Executes during object creation, after setting all properties.
-function xvartext_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to xvartext (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-set(hObject, 'string', '0');
-handles.xvar = 0;
 guidata(hObject, handles);
 
 % --- Executes during object creation, after setting all properties.
@@ -383,22 +344,6 @@ set(hObject, 'string', '0.6');
 
 handles.prob = 0.6;
 guidata(hObject, handles);
-
-% --- Executes during object creation, after setting all properties.
-function yvartext_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to yvartext (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-set(hObject, 'string', '0');
-handles.yvar = 0;
-guidata(hObject, handles);
-
 
 % --- Executes on button press in checkbox2.
 function checkbox2_Callback(hObject, eventdata, handles)
