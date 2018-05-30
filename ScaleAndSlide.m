@@ -1,40 +1,51 @@
-function [time] = ScaleAndSlide(MinSize,MaxSize, Steps,im, SVM2)
+function [time] = ScaleAndSlide(MinSize,MaxSize, samples,im, SVM2, hogrows, hogcols, prob, sup, xbox, ybox, xvar,yvar)
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
 tic;
-StepSize = (MaxSize-MinSize)/Steps;
-ScaleOutput = zeros(1,5);
+StepSize = (MaxSize-MinSize)/samples;
+ScaleOutput = zeros(1,7);
 index = 1;
 
-% for kk = 0:5:10
-    for ii = MinSize:StepSize:MaxSize
-        Slide = slidingwindow(imresize(im,ii),SVM2,30,80,5,ii, 0.6);
-        MaxSup = NonMaximaSupression(Slide);
-        [rows, cols] = size(MaxSup);
-        ScaleOutput(index:index+rows-1,1:5) = MaxSup;
-        index = index+rows;
-    end
+% for ll = -3:yvar:3
+%    for jj = -5:xvar:5
+        for ii = MinSize:StepSize:MaxSize
+            MaxSup = slidingwindow(imresize(im,ii),SVM2,xbox,ybox,ii,prob, hogrows, hogcols);
+            if sup == 1
+                MaxSup = NonMaximaSupression(MaxSup);
+            end
+            [rows, ~] = size(MaxSup);
+            ScaleOutput(index:index+rows-1,1:7) = MaxSup;
+            index = index+rows;
+        end
+%    end
 % end
-
-
-
-FinalOutput = NonMaximaSupressionScales(ScaleOutput);
+if sup == 1
+    FinalOutput = NonMaximaSupressionScales(ScaleOutput);
+else 
+    FinalOutput = ScaleOutput;
+end
 
 imshow(im)
+
+
 hold on
-[rows, cols] = size(FinalOutput);
-sScoreStart = 'Score: ';
+[rows, ~] = size(FinalOutput);
+
 for ii = 1:rows
     if (FinalOutput(ii,3) == 0)
         continue
     end
-    rectangle('Position',FinalOutput(ii,1:4),'EdgeColor','g', 'LineWidth', 3);
-    sScore = num2str(FinalOutput(ii,5)*100);
-    sScoreFinal = strcat(sScoreStart,sScore);
-    text(double(FinalOutput(ii,1)), double(FinalOutput(ii,2)-10),sScoreFinal, 'Color', 'green', 'FontSize', 10);
+    rectangle('Position',FinalOutput(ii,1:4),'EdgeColor','r', 'LineWidth', 3, 'Curvature',1);
+    sScore = num2str(round(FinalOutput(ii,5)*10000)/100);
+    sScoreFinal = strcat(sScore, '% x:', num2str(FinalOutput(ii, 6)),' y: ', num2str(FinalOutput(ii,7)));
+    text(double(FinalOutput(ii,1)), double(FinalOutput(ii,2)-10),sScoreFinal, 'Color', 'red', 'FontSize', 12);
+    
 end
 hold off
+
+
 time = toc;
 
 end
+
 
