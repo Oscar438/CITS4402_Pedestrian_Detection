@@ -22,7 +22,7 @@ function varargout = ParamTuningGUI(varargin)
 
 % Edit the above text to modify the response to help ParamTuningGUI
 
-% Last Modified by GUIDE v2.5 28-May-2018 18:44:40
+% Last Modified by GUIDE v2.5 30-May-2018 13:55:56
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -111,7 +111,7 @@ function generatemodel_Callback(hObject, eventdata, handles)
 prompt = {'Enter name of output model', 'Enter number of positive samples:', 'Enter number of negative samples:', 'Enter number of negative mining samples:', 'Enter number of negative mining iterations', 'rows for hog-transform', 'cols for hog-transform' };
 title = 'Input';
 dims = [1 35];
-definput = {'badboySVM', '100','100','50', '1', '80', '20' };
+definput = {'badboySVM', '100','100','50', '1', '80', '30' };
 out = inputdlg(prompt,title,dims,definput);
 SVM2 = generateModel( str2double(out{2}), str2double(out{3}), str2double(out{4}), str2double(out{5}), str2double(out{6}), str2double(out{7}) );
 save(out{1}, 'SVM2');
@@ -137,237 +137,6 @@ guidata(hObject, handles);
 
 
 
-% --- Executes on slider movement.
-function xvarslider_Callback(hObject, eventdata, handles)
-% hObject    handle to xvarslider (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-newVal = floor(get(hObject,'Value'));
-set(hObject,'Value',newVal);
-set(handles.xvartext, 'string', get(hObject, 'value'));
-handles.xvar = newVal;
-guidata(hObject, handles);
-
-
-
-
-% --- Executes during object creation, after setting all properties.
-function xvarslider_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to xvarslider (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: slider controls usually have a light gray background.
-if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor',[.9 .9 .9]);
-end
-set(handles.xvartext, 'string', get(hObject, 'value'));
-
-
-% --- Executes on slider movement.
-function minslide_Callback(hObject, eventdata, handles)
-% hObject    handle to minslide (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'Value') returns position of slider
-%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
-val = round(get(hObject, 'value').*1000)/1000;
-set(handles.mintext, 'string', val);
-handles.minSize = val;
-guidata(hObject, handles);
-
-% --- Executes during object creation, after setting all properties.
-function minslide_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to minslide (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: slider controls usually have a light gray background.
-if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor',[.9 .9 .9]);
-end
-
-
-% --- Executes on slider movement.
-function maxslider_Callback(hObject, eventdata, handles)
-% hObject    handle to maxslider (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'Value') returns position of slider
-%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
-val = round(get(hObject, 'value').*100)/100;
-set(handles.maxtext, 'string', val);
-handles.maxSize = val;
-guidata(hObject, handles);
-
-
-% --- Executes during object creation, after setting all properties.
-function maxslider_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to maxslider (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: slider controls usually have a light gray background.
-if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor',[.9 .9 .9]);
-end
-
-
-
-% --- Executes on slider movement.
-function sampleslider_Callback(hObject, eventdata, handles)
-% hObject    handle to sampleslider (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'Value') returns position of slider
-%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
-newVal = floor(get(hObject,'Value'));
-set(hObject,'Value',newVal);
-set(handles.sampletext, 'string', get(hObject, 'value'));
-handles.samples = newVal;
-guidata(hObject, handles);
-
-% --- Executes during object creation, after setting all properties.
-function sampleslider_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to sampleslider (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: slider controls usually have a light gray background.
-if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor',[.9 .9 .9]);
-end
-
-
-% --- Executes on slider movement.
-function xboxslider_Callback(hObject, eventdata, handles)
-% hObject    handle to xboxslider (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'Value') returns position of slider
-%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
-newVal = floor(get(hObject,'Value'));
-set(hObject,'Value',newVal);
-set(handles.xboxtext, 'string', get(hObject, 'value'));
-handles.xbox = newVal;
-guidata(hObject, handles);
-
-% --- Executes during object creation, after setting all properties.
-function xboxslider_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to xboxslider (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: slider controls usually have a light gray background.
-if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor',[.9 .9 .9]);
-end
-
-
-% --- Executes on slider movement.
-function yboxslider_Callback(hObject, eventdata, handles)
-% hObject    handle to yboxslider (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'Value') returns position of slider
-%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
-newVal = floor(get(hObject,'Value'));
-set(hObject,'Value',newVal);
-set(handles.yboxtext, 'string', get(hObject, 'value'));
-handles.ybox = newVal;
-guidata(hObject, handles);
-
-% --- Executes during object creation, after setting all properties.
-function yboxslider_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to yboxslider (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: slider controls usually have a light gray background.
-if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor',[.9 .9 .9]);
-end
-
-
-% --- Executes on slider movement.
-function probslider_Callback(hObject, eventdata, handles)
-% hObject    handle to probslider (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'Value') returns position of slider
-%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
-val = round(get(hObject, 'value').*100)/100;
-set(handles.probtext, 'string', val);
-handles.prob = val;
-guidata(hObject, handles);
-
-% --- Executes during object creation, after setting all properties.
-function probslider_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to probslider (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: slider controls usually have a light gray background.
-if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor',[.9 .9 .9]);
-end
-
-
-% --- Executes on button press in supbox.
-function supbox_Callback(hObject, eventdata, handles)
-% hObject    handle to supbox (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of supbox
-handles.sup = get(hObject, 'Value');
-guidata(hObject, handles);
-
-
-% --- Executes during object creation, after setting all properties.
-function axis1_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to axis1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: place code in OpeningFcn to populate axis1
-guidata(hObject, handles);
-
-
-% --- Executes on slider movement.
-function yvarslide_Callback(hObject, eventdata, handles)
-% hObject    handle to yvarslide (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'Value') returns position of slider
-%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
-newVal = floor(get(hObject,'Value'));
-set(hObject,'Value',newVal);
-set(handles.yvartext, 'string', get(hObject, 'value'));
-handles.yvar = newVal;
-guidata(hObject, handles);
-
-% --- Executes during object creation, after setting all properties.
-function yvarslide_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to yvarslide (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: slider controls usually have a light gray background.
-if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor',[.9 .9 .9]);
-end
-
-
-
 function edit1_Callback(hObject, eventdata, handles)
 % hObject    handle to edit1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -377,7 +146,6 @@ function edit1_Callback(hObject, eventdata, handles)
 %        str2double(get(hObject,'String')) returns contents of edit1 as a double
 handles.hogrows = str2double(get(hObject,'String'));
 guidata(hObject, handles);
-
 % --- Executes during object creation, after setting all properties.
 function edit1_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to edit1 (see GCBO)
@@ -389,8 +157,8 @@ function edit1_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
-
-
+handles.hogrows = 30;
+guidata(hObject, handles);
 
 function edit2_Callback(hObject, eventdata, handles)
 % hObject    handle to edit2 (see GCBO)
@@ -401,7 +169,6 @@ function edit2_Callback(hObject, eventdata, handles)
 %        str2double(get(hObject,'String')) returns contents of edit2 as a double
 handles.hogcols = str2double(get(hObject,'String'));
 guidata(hObject, handles);
-
 
 % --- Executes during object creation, after setting all properties.
 function edit2_CreateFcn(hObject, eventdata, handles)
@@ -414,3 +181,260 @@ function edit2_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+handles.hogcols = 80;
+guidata(hObject, handles);
+
+
+
+
+function xvartext_Callback(hObject, eventdata, handles)
+% hObject    handle to xvartext (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of xvartext as text
+%        str2double(get(hObject,'String')) returns contents of xvartext as a double
+handles.xvar = str2double(get(hObject,'String'));
+guidata(hObject, handles);
+
+
+function mintext_Callback(hObject, eventdata, handles)
+% hObject    handle to mintext (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of mintext as text
+%        str2double(get(hObject,'String')) returns contents of mintext as a double
+handles.minSize = str2double(get(hObject,'String'));
+guidata(hObject, handles);
+
+
+function maxtext_Callback(hObject, eventdata, handles)
+% hObject    handle to maxtext (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of maxtext as text
+%        str2double(get(hObject,'String')) returns contents of maxtext as a double
+handles.maxSize = str2double(get(hObject,'String'));
+guidata(hObject, handles);
+
+
+function sampletext_Callback(hObject, eventdata, handles)
+% hObject    handle to sampletext (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of sampletext as text
+%        str2double(get(hObject,'String')) returns contents of sampletext as a double
+handles.samples = str2double(get(hObject,'String'));
+guidata(hObject, handles);
+
+
+function xboxtext_Callback(hObject, eventdata, handles)
+% hObject    handle to xboxtext (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of xboxtext as text
+%        str2double(get(hObject,'String')) returns contents of xboxtext as a double
+handles.xbox = str2double(get(hObject,'String'));
+guidata(hObject, handles);
+
+
+function yboxtext_Callback(hObject, eventdata, handles)
+% hObject    handle to yboxtext (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of yboxtext as text
+%        str2double(get(hObject,'String')) returns contents of yboxtext as a double
+handles.ybox = str2double(get(hObject,'String'));
+guidata(hObject, handles);
+
+
+function probtext_Callback(hObject, eventdata, handles)
+% hObject    handle to probtext (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of probtext as text
+%        str2double(get(hObject,'String')) returns contents of probtext as a double
+
+handles.prob = str2double(get(hObject,'String'));
+guidata(hObject, handles);
+
+function yvartext_Callback(hObject, eventdata, handles)
+% hObject    handle to yvartext (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of yvartext as text
+%        str2double(get(hObject,'String')) returns contents of yvartext as a double
+handles.yvar = str2double(get(hObject,'String'));
+guidata(hObject, handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function xvartext_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to xvartext (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+set(hObject, 'string', '0');
+handles.xvar = 0;
+guidata(hObject, handles);
+
+% --- Executes during object creation, after setting all properties.
+function maxtext_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to maxtext (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+set(hObject, 'string', '0.3');
+handles.maxSize = 0.3;
+guidata(hObject, handles);
+
+% --- Executes during object creation, after setting all properties.
+function mintext_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to maxtext (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+set(hObject, 'string', '0.005');
+handles.minSize = 0.005;
+guidata(hObject, handles);
+
+% --- Executes during object creation, after setting all properties.
+function sampletext_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to sampletext (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+set(hObject, 'string', '30');
+handles.samples = 30;
+guidata(hObject, handles);
+
+% --- Executes during object creation, after setting all properties.
+function xboxtext_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to xboxtext (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+set(hObject, 'string', '30');
+handles.xbox = 30;
+guidata(hObject, handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function yboxtext_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to yboxtext (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+set(hObject, 'string', '80');
+
+handles.ybox = 80;
+guidata(hObject, handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function probtext_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to probtext (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+set(hObject, 'string', '0.6');
+
+handles.prob = 0.6;
+guidata(hObject, handles);
+
+% --- Executes during object creation, after setting all properties.
+function yvartext_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to yvartext (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+set(hObject, 'string', '0');
+handles.yvar = 0;
+guidata(hObject, handles);
+
+
+% --- Executes on button press in checkbox2.
+function checkbox2_Callback(hObject, eventdata, handles)
+% hObject    handle to checkbox2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of checkbox2
+handles.sup = get(hObject,'Value');
+guidata(hObject, handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function checkbox2_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to checkbox2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+handles.sup = get(hObject,'Value');
+guidata(hObject, handles);
+
+
+% --- Executes on mouse press over axes background.
+function axis1_ButtonDownFcn(hObject, eventdata, handles)
+% hObject    handle to axis1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+% --- Executes on mouse press over axes background.
+function axis1_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to axis1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+function axis1_Callack(hObject, eventdata, handles)
+% hObject    handle to axis1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+function figure1_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to axis1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
