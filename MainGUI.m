@@ -22,7 +22,7 @@ function varargout = MainGUI(varargin)
 
 % Edit the above text to modify the response to help MainGUI
 
-% Last Modified by GUIDE v2.5 30-May-2018 19:37:29
+% Last Modified by GUIDE v2.5 30-May-2018 23:22:20
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -81,16 +81,13 @@ function LoadImage_Callback(hObject, eventdata, handles)
 % hObject    handle to LoadImage (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-[baseName, folder] = uigetfile('*.png');
+[baseName, folder] = uigetfile('*.jpg;*.png;*.tiff;','Select file');
 if (folder ~= 0)
     handles.file = fullfile(folder, baseName);
     axes(handles.ImageIn);
     image = imread(handles.file);
     imshow(image);
-    handles.SVM = load(fullfile('170P600N300M3I8020.mat'),'SVM2');
 end
-
-
 guidata(hObject, handles);
 
 
@@ -105,18 +102,9 @@ set(handles.DetectionTime,'String','Running');
 drawnow;
 image = imread(handles.file);
 handles.image = image;
-time = ScaleAndSlide(0.001,0.3,28,image,handles.SVM.SVM2, 80, 20, 0.68, 1, 30, 80, 0);
+time = ScaleAndSlide(0.001,0.3,30,image,handles.SVM.SVM2, 60, 23, 0.68, 1, 30, 80, 0);
+%time = time + ScaleAndSlide(0.001,0.3,30,image,handles.SVM.SVM2, 60, 23, 0.68, 1, 23, 60, 0);
 set(handles.DetectionTime,'string',string(time));
-
-
-
-function DetectionTime_Callback(hObject, eventdata, handles)
-% hObject    handle to DetectionTime (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of DetectionTime as text
-%        str2double(get(hObject,'String')) returns contents of DetectionTime as a double
 
 
 % --- Executes during object creation, after setting all properties.
@@ -183,3 +171,16 @@ set(handles.LoadRCNN,'Enable','off');
 
 guidata(hObject,handles);
 
+
+
+% --- Executes on button press in loadModel.
+function loadModel_Callback(hObject, eventdata, handles)
+% hObject    handle to loadModel (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+[model,modelpath]=uigetfile('*.mat');
+if (modelpath ~= 0)
+    modelp = fullfile(modelpath, model);
+    handles.SVM = load(modelp,'SVM2');
+end
+guidata(hObject, handles);

@@ -31,7 +31,6 @@ imshow(im)
 
 hold on
 [rows, ~] = size(FinalOutput);
-fprintf('Start Detection \n');
 for ii = 1:rows
     if (FinalOutput(ii,3) == 0)
         continue

@@ -35,7 +35,7 @@ for i=1:cols-2
     Ix(:,i)=(im(:,i)-im(:,i+2));
 end
 
-gauss=fspecial('gaussian',8); %% Initialized a gaussian filter with sigma=0.5 * block width.    
+%gauss=fspecial('gaussian',8); %% Initialized a gaussian filter with sigma=0.5 * block width.    
 
 angle=atand(Ix./Iy); % Matrix containing the angles of each edge gradient
 angle=imadd(angle,90); %Angles in range (0,180)

@@ -38,7 +38,7 @@ for ii = 1 : positives
     record = PASreadrecord(fileName);
     image = imread(fullfile(baseDir,record.imgname));
     negImage = rgb2gray(image);
-    image = lbp(image);
+%     image = lbp(image);
     for jj = 1 : length(record.objects)
         bbox = record.objects(jj).bbox;
         bbox(3:4) = bbox(3:4) - bbox(1:2);
@@ -59,7 +59,7 @@ end
 files = dir(negDir); files(1:2) = [];
 for ii = 1:negatives
     negImage = imread(files(ii).name);
-        negImage = lbp(negImage);
+%         negImage = lbp(negImage);
     [height, width, ~] = size(negImage);
     xbox = int16(width./10);
     ybox = int16(height./4);
@@ -82,21 +82,21 @@ labels = labels(1:count,:);
 SVM = fitcsvm(test,labels);
 SVM2 = fitSVMPosterior(SVM);
 
-% performs negative mining in the two negative folders 
-% files = dir(pednegdir); files(1:2) = [];
-% [appendTest, appendLabel] = negativetraining( SVM2, files, 20, hogrows, hogcols, featureSize);
-% test = [test; appendTest];
-% labels = [labels; appendLabel];
+%performs negative mining in the two negative folders 
+files = dir(pednegdir); files(1:2) = [];
+[appendTest, appendLabel] = negativetraining( SVM2, files, 20, hogrows, hogcols, featureSize);
+test = [test; appendTest];
+labels = [labels; appendLabel];
 
-% for kk = 1:miningiterations
-%     files = dir(negDir); files(1:2) = [];
-%     [appendTest, appendLabel] = negativetraining( SVM2, files, negativesmining, hogrows, hogcols, featureSize);
-%     test = [test; appendTest];
-%     labels = [labels; appendLabel];
-%     
-%     SVM = fitcsvm(test,labels);
-%     SVM2 = fitSVMPosterior(SVM);
-% end
+for kk = 1:miningiterations
+    files = dir(negDir); files(1:2) = [];
+    [appendTest, appendLabel] = negativetraining( SVM2, files, negativesmining, hogrows, hogcols, featureSize);
+    test = [test; appendTest];
+    labels = [labels; appendLabel];
+    
+    SVM = fitcsvm(test,labels);
+    SVM2 = fitSVMPosterior(SVM);
+end
 
 svm = SVM2;
 end
