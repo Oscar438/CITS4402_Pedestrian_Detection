@@ -129,7 +129,8 @@ function detectpeople_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 drawnow;
 image = imread(handles.file);
-handle.time = ScaleAndSlide(handles.minSize,handles.maxSize,handles.samples,image, handles.SVM.SVM2, handles.hogrows, handles.hogcols, handles.prob, handles.sup, handles.xbox, handles.ybox );
+time = ScaleAndSlide(handles.minSize,handles.maxSize,handles.samples,image, handles.SVM.SVM2, handles.hogrows, handles.hogcols, handles.prob, handles.sup, 23, 60 );
+time = time + ScaleAndSlide(handles.minSize,handles.maxSize,handles.samples,image, handles.SVM.SVM2, handles.hogrows, handles.hogcols, handles.prob, handles.sup, 30, 80 );
 set(handles.timestext,'string',  string(handle.time));
 guidata(hObject, handles);
 

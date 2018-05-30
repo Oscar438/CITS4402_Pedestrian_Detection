@@ -4,7 +4,8 @@ function [outFeature, outLabel] = negativetraining(model, files, negativesmining
 %   SVM
 outFeature = zeros(5000, featureSize);
 count = 1;
-for kk = 1:negativesmining%((itr-1)*negativesmining+1):(itr*negativesmining)
+
+for kk = 1:negativesmining
     im = imread(files(kk).name);
     for ii = linspace(0.05, 0.3, 10)
         index=0;

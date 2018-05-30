@@ -22,7 +22,7 @@ function varargout = MainGUI(varargin)
 
 % Edit the above text to modify the response to help MainGUI
 
-% Last Modified by GUIDE v2.5 16-Apr-2018 13:34:29
+% Last Modified by GUIDE v2.5 30-May-2018 19:37:29
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -54,6 +54,9 @@ function MainGUI_OpeningFcn(hObject, eventdata, handles, varargin)
 
 % Choose default command line output for MainGUI
 handles.output = hObject;
+handles.image = hObject;
+handles.net = hObject;
+handles.boxes = hObject;
 
 % Update handles structure
 guidata(hObject, handles);
@@ -84,22 +87,25 @@ if (folder ~= 0)
     axes(handles.ImageIn);
     image = imread(handles.file);
     imshow(image);
-    handles.SVM = load('HoggSVM.mat','SVM2');
+    handles.SVM = load(fullfile('170P600N300M3I8020.mat'),'SVM2');
 end
+
+
 guidata(hObject, handles);
 
 
 
 
-% --- Executes on button press in DetectPedestrians.
-function DetectPedestrians_Callback(hObject, eventdata, handles)
-% hObject    handle to DetectPedestrians (see GCBO)
+% --- Executes on button press in DetectPedestriansFast.
+function DetectPedestriansFast_Callback(hObject, eventdata, handles)
+% hObject    handle to DetectPedestriansFast (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 set(handles.DetectionTime,'String','Running');
 drawnow;
 image = imread(handles.file);
-time = ScaleAndSlide(0.01,0.3,20,image,handles.SVM.SVM2, 80, 20, 0.6, 1, 30, 80, 5);
+handles.image = image;
+time = ScaleAndSlide(0.001,0.3,28,image,handles.SVM.SVM2, 80, 20, 0.68, 1, 30, 80, 0);
 set(handles.DetectionTime,'string',string(time));
 
 
@@ -124,3 +130,56 @@ function DetectionTime_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
+% --- Executes on button press in DetectPedestrianAccurate.
+function DetectPedestrianAccurate_Callback(hObject, eventdata, handles)
+% hObject    handle to DetectPedestrianAccurate (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+set(handles.DetectionTime,'String','Running');
+drawnow;
+image = imread(handles.file);
+time = ScaleAndSlide(0.001,0.3,28,image,handles.SVM.SVM2, 80, 20, 0.68, 1, 20, 80, 1,handles.net,handles.boxes);
+set(handles.DetectionTime,'string',string(time));
+
+
+
+
+
+% --- Executes on button press in LoadRCNN.
+function LoadRCNN_Callback(hObject, eventdata, handles)
+% hObject    handle to LoadRCNN (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Setup matconvnet
+run(fullfile('helper-functions','matconvnet-1.0-beta25','matlab','vl_setupnn')) ;
+opts.classes = {'person'} ;
+opts.gpu = [] ;
+opts.confThreshold = 0.5 ;
+opts.nmsThreshold = 0.3 ;
+%opts = vl_argparse(opts,varargin) ;
+
+% Load the fast-rcnn-vgg16-pascal07-dagnn network and put it in test mode.
+[baseName, folder] = uigetfile('*.mat');
+if (folder ~= 0)
+    net = load(fullfile(folder, baseName));
+end
+
+%net = load(fullfile('Fast-RCNN','fast-rcnn-vgg16-pascal07-dagnn.mat')) ;
+net = dagnn.DagNN.loadobj(net);
+net.mode = 'test' ;
+
+% Mark class and bounding box predictions as `precious` so they are
+% not optimized away during evaluation.
+net.vars(net.getVarIndex('cls_prob')).precious = 1 ;
+handles.net = net;
+% Load boxes
+boxes = load(fullfile('helper-functions','matconvnet-1.0-beta25','examples','fast_rcnn','000004_boxes.mat')) ;
+boxes = single(boxes.boxes') + 1 ;
+handles.boxes = boxes;
+set(handles.LoadRCNN,'Enable','off');
+
+guidata(hObject,handles);
+
