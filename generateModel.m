@@ -10,7 +10,7 @@ pednegdir = fullfile(baseDir, 'ped-negative');
 files = dir(annotDir); files(1:2) = [];
 
 count = 1;
-numCrops = 10000;
+numCrops = 20000;
 
 fileName = fullfile(annotDir, files(1).name);
 record = PASreadrecord(fileName);
@@ -89,15 +89,15 @@ labels = labels(1:count,:);
 
 SVM = fitcsvm(test,labels);
 SVM2 = fitSVMPosterior(SVM);
-% 
-% files = dir(negDir); files(1:2) = [];
-% for kk = 1:miningiterations
-%     [appendTest, appendLabel] = negativetraining( SVM2, files, negativesmining, hogrows, hogcols, featureSize, kk);
-%     test = [test; appendTest];
-%     labels = [labels; appendLabel];
-%     SVM = fitcsvm(test,labels);
-%     SVM2 = fitSVMPosterior(SVM);
-% end
+
+files = dir(negDir); files(1:2) = [];
+for kk = 1:miningiterations
+    [appendTest, appendLabel] = negativetraining( SVM2, files, negativesmining, hogrows, hogcols, featureSize, kk);
+    test = [test; appendTest];
+    labels = [labels; appendLabel];
+    SVM = fitcsvm(test,labels);
+    SVM2 = fitSVMPosterior(SVM);
+end
 
 svm = SVM2;
 
