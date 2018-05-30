@@ -19,9 +19,9 @@ for ii = 1:rows
         heightCurrent = Data(jj,4);
         width = max(widthCurrent,widthMax);
         height = max(heightMax,heightCurrent);
-        if (jj ~= index && ((abs(Data(jj,1) - Data(index,1)) < width/2) && (abs(Data(jj,2) - Data(index,2)) < heightMax))) 
+        if (jj ~= index && ((abs(Data(index,1) - Data(jj,1)) < width/2) && (abs(Data(index,2) - Data(jj,2) ) < heightMax))) 
             Data(jj,5) = 0;
-         elseif (jj ~= index && ((abs(Data(jj,1) - (Data(index,1)-widthMax)) < widthMax/2) && (abs(Data(jj,2) - Data(index,2)) < heightMax)))
+         elseif (jj ~= index && ((abs((Data(index,1)+widthMax) - (Data(jj,1)+Data(jj,3))) < width/2) && (abs((Data(index,2)) - Data(jj,2)) < height)))
             Data(jj,5) = 0; 
         end
     end
