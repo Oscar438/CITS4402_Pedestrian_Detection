@@ -58,10 +58,10 @@ if (time < 2 && norec == 0)
     % when the picture is really really small and the previos spaces have
     % gone through very very quickly
      if (time  <  2)
-     time = time + ScaleAndSlide(0.6,0.7,4,im, SVM2, hogrows, hogcols, prob, sup, xbox, ybox, 1, advanced);
+     time = time + ScaleAndSlide(0.6,0.7,3,im, SVM2, hogrows, hogcols, prob, sup, xbox, ybox, 1, advanced);
     end
     if (time  <  3)
-     time = time + ScaleAndSlide(0.7,0.9,4,im, SVM2, hogrows, hogcols, prob, sup, xbox, ybox, 1, advanced);
+     time = time + ScaleAndSlide(0.7,0.8,3,im, SVM2, hogrows, hogcols, prob, sup, xbox, ybox, 1, advanced);
     end
 end
 
