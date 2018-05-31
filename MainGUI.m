@@ -85,8 +85,16 @@ function LoadImage_Callback(hObject, eventdata, handles)
 if (folder ~= 0)
     handles.file = fullfile(folder, baseName);
     axes(handles.ImageIn);
-    image = imread(handles.file);
-    imshow(image);
+    handles.image = imread(handles.file);
+      [r,c,~] = size(handles.image);
+    gauss = fspecial('gaussian', 8);
+    
+    while (r>400 || c>400)
+        handles.image = imfilter(handles.image, gauss, 'replicate');
+        handles.image = imresize(handles.image, 0.7);
+        [r,c,~] = size(handles.image);
+    end
+    imshow(handles.image);
 end
 guidata(hObject, handles);
 
@@ -100,10 +108,7 @@ function DetectPedestriansFast_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 set(handles.DetectionTime,'String','Running');
 drawnow;
-image = imread(handles.file);
-handles.image = image;
-time = ScaleAndSlide(0.001,0.3,30,image,handles.SVM.SVM2, 60, 23, 0.68, 1, 30, 80, 0);
-%time = time + ScaleAndSlide(0.001,0.3,30,image,handles.SVM.SVM2, 60, 23, 0.68, 1, 23, 60, 0);
+time = ScaleAndSlide(0.001,0.3,20,handles.image,handles.SVM.SVM2, 60, 23, 0.1, 1, 23, 60,0, 0);
 set(handles.DetectionTime,'string',string(time));
 
 
@@ -127,8 +132,8 @@ function DetectPedestrianAccurate_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 set(handles.DetectionTime,'String','Running');
 drawnow;
-image = imread(handles.file);
-time = ScaleAndSlide(0.001,0.3,28,image,handles.SVM.SVM2, 80, 20, 0.68, 1, 20, 80, 1,handles.net,handles.boxes);
+
+time = ScaleAndSlide(0.01,0.3,10,handles.image,handles.SVM.SVM2, 60, 23, 0.1, 1, 23, 60,0, 1,handles.net,handles.boxes);
 set(handles.DetectionTime,'string',string(time));
 
 

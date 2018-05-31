@@ -15,6 +15,8 @@ annotDir = fullfile(baseDir, 'PennFudanPed', 'Annotation');
 negDir = fullfile(baseDir, 'Negative');
 pednegdir = fullfile(baseDir, 'ped-negative');
 
+
+
 files = dir(annotDir); files(1:2) = [];
 count = 1;
 numCrops = 20000;
@@ -83,20 +85,22 @@ SVM = fitcsvm(test,labels);
 SVM2 = fitSVMPosterior(SVM);
 
 %performs negative mining in the two negative folders 
-files = dir(pednegdir); files(1:2) = [];
-[appendTest, appendLabel] = negativetraining( SVM2, files, 20, hogrows, hogcols, featureSize);
-test = [test; appendTest];
-labels = [labels; appendLabel];
-
+ files = dir(negDir); files(1:2) = [];
 for kk = 1:miningiterations
-    files = dir(negDir); files(1:2) = [];
-    [appendTest, appendLabel] = negativetraining( SVM2, files, negativesmining, hogrows, hogcols, featureSize);
+    [appendTest, appendLabel] = negativetraining( SVM2, files, negativesmining, hogrows, hogcols, featureSize, 0.6);
     test = [test; appendTest];
     labels = [labels; appendLabel];
-    
     SVM = fitcsvm(test,labels);
     SVM2 = fitSVMPosterior(SVM);
 end
+pedfiles = dir(pednegdir); pedfiles(1:135) = [];
+size(pedfiles)
+[appendTest, appendLabel] = negativetraining( SVM2, pedfiles, 16, hogrows, hogcols, featureSize, 0.6);
+test = [test; appendTest];
+labels = [labels; appendLabel];
+
+SVM = fitcsvm(test,labels);
+SVM2 = fitSVMPosterior(SVM);
 
 svm = SVM2;
 end

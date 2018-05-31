@@ -4,16 +4,20 @@ function [bbox] = slidingwindow(im,model, xbox, ybox, scale, prob,  hogrows, hog
 % bbox = [xpos/scale, ypos/scale, xbox/scale, ybox/scale, probability]
 % im = lbp(im);
 [height, width, ~] = size(im);
-step = max([ceil(width/xbox), ceil(height/ybox)]);
-stepx = step;
-stepy = step;
+if(width > height*2)  
+    stepx = 5;
+    stepy = 3;
+else
+    stepx = 3;
+    stepy = 5;
+end
 
 count = 1;
 if (height - ybox <= 0|| width - xbox <= 0)
     bbox = zeros(1,7);
    return 
 end
-bbox = zeros(round((width/step)*(height/step)), 7);
+bbox = zeros(round((width/stepx)*(height/stepy)), 7);
 
 for ii = 1:stepy:height-ybox
     for jj = 1:stepx:width-xbox
@@ -25,7 +29,7 @@ for ii = 1:stepy:height-ybox
         if (ped == 1 && probability > prob)
            xpos = jj;
            ypos = ii;
-           bbox(count,:) = [xpos/scale, ypos/scale, xbox/scale, ybox/scale, probability, xbox, ybox];
+           bbox(count,:) = [xpos/scale, ypos/scale, xbox/scale, ybox/scale, probability, scale, 0];
            count = count + 1;
         end
     end

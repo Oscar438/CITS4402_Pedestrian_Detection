@@ -95,10 +95,20 @@ function loadimage_Callback(hObject, eventdata, handles)
 [filename,pathname] = uigetfile('*.jpg;*.png;*.tiff;','Select file');
 handles = guidata(hObject); 
 if (ischar(pathname))
-    handles.file = fullfile(pathname, filename);
+    file = fullfile(pathname, filename);
     axes(handles.axis1);
-    image = imread(handles.file);
-    imshow(image);
+    handles.image = imread(file);
+    [r,c,~] = size(handles.image);
+    gauss = fspecial('gaussian', 8);
+    
+    while (r>400 || c>400)
+        handles.image = imfilter(handles.image, gauss, 'replicate');
+        handles.image = imresize(handles.image, 0.7);
+        [r,c,~] = size(handles.image);
+    end
+    
+  
+    imshow(handles.image);
 end
 guidata(hObject, handles);
 
@@ -128,8 +138,7 @@ function detectpeople_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 drawnow;
-image = imread(handles.file);
-time = ScaleAndSlide(handles.minSize,handles.maxSize,handles.samples,image, handles.SVM.SVM2, handles.hogrows, handles.hogcols, handles.prob, handles.sup, handles.xbox, handles.ybox, 0 );
+time = ScaleAndSlide(handles.minSize,handles.maxSize,handles.samples,handles.image, handles.SVM.SVM2, handles.hogrows, handles.hogcols, handles.prob, handles.sup, handles.xbox, handles.ybox, 0, 0 );
 set(handles.timestext,'string',  string(time));
 guidata(hObject, handles);
 
